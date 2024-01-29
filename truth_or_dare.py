@@ -21,6 +21,30 @@ class Dice:
             self.val += rhs.val
         result = self.val 
 
+    def __str__(self) -> str:
+        """Returning the value of the dice as a string."""
+        return str(self.val)
+
+    def win_or_loss(self, dice_guest: Dice) -> str:
+        """Determine who's winning."""
+        if self.val > dice_guest.val:
+            return "win"
+        elif self.val < dice_guest.val:
+            return "lose"
+        else:
+            return "tie"
+
+class RadNum:
+    """Randomized Number used in the game."""
+    val: int
+
+    def __init__(self, input_upperrange: int) -> None:
+        """Initial Constructor."""
+        self.val = randint(1, input_upperrange)
+
+#There're two different methods used for determining the players' wins and losses: dice or by random numbers.
+
+
 def game_m1(host: str, guest: str) -> str:
     """Mode 1: Throwing the dice one by one."""
     print(f"Hi {host} and {guest}!")
@@ -36,6 +60,55 @@ def game_m1(host: str, guest: str) -> str:
     if idx_rules == 5:
         print("Five times? Seriously? This game is not for idoits!")
         quit()
+
+    num_round: int = 1
+    end_idc: bool = False
+    guest_score: int = 0
+    host_score: int = 0
+
+    while end_idc == False:
+        print()
+        print()
+        print(f"------Round {num_round}------")
+        print(f"Let's start! {guest} first!")
+        print(".............")
+        dice_guest: Dice = Dice()
+        print(f"{guest}, your dice rolls to {dice_guest} \n")
+        
+        print(f"{host} next!")
+        print(".............")
+        dice_host: Dice = Dice()
+        print(f"{host}, your dice rolls to {dice_host} \n")
+
+        print("The result is........")
+        check: str = dice_host.win_or_loss(dice_guest)
+        if  check == "win":
+            print(f"{host} wins!")
+            save_spend: str = input("Save it or Spend it? (Type in save or spend) ")
+            print()
+            if save_spend == "save":
+                host_score += 1
+            elif save_spend == "spend":
+                print(f"{guest}, Truth or Dare!?")
+        elif check == "lose":
+            print(f"{guest} wins!")
+            save_spend: str = input("Save it or Spend it? (Type in save or spend) ")
+            print()
+            if save_spend == "save":
+                guest_score += 1
+            elif save_spend == "spend":
+                print(f"{host}, Truth or Dare!?")
+        elif check == "tie":
+            print("It's a tie!")
+            print()
+
+        print(f"{guest}: {guest_score}, {host}: {host_score} \n")
+
+        end: str = input("Keep playing? (Type in yes or no) ")
+        print()
+        if end == "no":
+            end_idc = True
+        num_round += 1
 
     return(f"See u next time! {host} and {guest}")
 
@@ -79,6 +152,8 @@ def game_m3(host: str, guest: str):
 
     return(f"See u next time! {host} and {guest}")
 
+
+# Introductions
 
 print("Welcomeeeeeeeeee")
 player_1: str = input("What's your name? ")
